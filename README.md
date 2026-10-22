@@ -1,149 +1,394 @@
 # Product Service
 
-A simple REST API built with Java and Spring Boot to manage products and their categories.
+A REST API built with Java and Spring Boot for managing products and their categories. Read access is open to everyone, while creating, updating and deleting data is protected with JWT authentication and role-based access control, using Keycloak as the identity provider.
 
-You can create, view, update and delete products, and see which products belong to each category. All data is stored in a MySQL database.
-
-I built this project to learn backend development with Spring Boot and to practice writing clean, layered code.
+I built this project to practise backend development the way it is done in real teams: a layered structure, DTOs instead of exposing entities, centralised error handling, API documentation, and token-based security.
 
 ---
 
-## What It Does
+## Table of Contents
 
-- Add, view, update and delete products
-- View categories along with the products inside them
-- Every product belongs to one category
-- Uses DTOs, so the API response is separate from the database entity
-- Interactive API docs with Swagger, so you can test endpoints in the browser
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Data Model](#data-model)
+- [Security and Roles](#security-and-roles)
+- [API Endpoints](#api-endpoints)
+- [Example Requests](#example-requests)
+- [Error Handling](#error-handling)
+- [Getting Started](#getting-started)
+- [Configuration](#configuration)
+- [API Documentation](#api-documentation)
+- [Actuator and Monitoring](#actuator-and-monitoring)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+- [Author](#author)
+
+---
+
+## Features
+
+- Full CRUD for products
+- Create, read and delete for categories
+- Every product belongs to exactly one category, and a category returns the list of its products
+- DTO layer and mapper classes, so the API contract is separate from the database entities
+- Stateless authentication: the service validates JWTs issued by Keycloak (OAuth2 Resource Server)
+- Role-based authorisation with `@PreAuthorize` (`ADMIN` and `SELLER`)
+- Global exception handling with a consistent JSON error response
+- Interactive API documentation with Swagger UI (springdoc-openapi)
+- Spring Boot Actuator with a custom endpoint
+- Request and application logging with SLF4J (Lombok `@Slf4j`)
 
 ---
 
 ## Tech Stack
 
-| Tool | Used For |
+| Area | Technology |
 |---|---|
-| Java 17 | Main language |
-| Spring Boot 3 | Application framework |
-| Spring Web | Building REST APIs |
-| Spring Data JPA | Talking to the database |
-| MySQL | Database |
-| Swagger / OpenAPI | API documentation |
-| Lombok | Less boilerplate code |
-| Maven | Build and dependency management |
+| Language | Java 17 |
+| Framework | Spring Boot 4.1.0 |
+| Web | Spring Web MVC |
+| Persistence | Spring Data JPA, Hibernate |
+| Database | MySQL |
+| Security | Spring Security, OAuth2 Resource Server |
+| Identity Provider | Keycloak |
+| API Docs | springdoc-openapi 3.1.0 (Swagger UI) |
+| Monitoring | Spring Boot Actuator |
+| Boilerplate | Lombok |
+| Build Tool | Maven |
 
 ---
 
-## Before You Start
+## Architecture
 
-Make sure these are installed on your computer:
+The project follows a classic layered design. A request travels down through the layers, and the response travels back up.
+
+```
+Client
+  |
+  v
+Security filter chain  (validates the JWT, maps Keycloak roles to authorities)
+  |
+  v
+Controller             (HTTP layer, request mapping, role checks)
+  |
+  v
+Service                (business logic and validation rules)
+  |
+  v
+Repository             (Spring Data JPA)
+  |
+  v
+MySQL
+```
+
+- **Controllers** only deal with HTTP: paths, status codes and request/response bodies.
+- **Services** hold the business rules, such as checking that a category name is unique or that a category exists before a product is created.
+- **Mappers** convert between entities and DTOs, so entities are never returned directly to the client.
+- **GlobalExceptionHandler** turns custom exceptions into clean JSON error responses.
+
+---
+
+## Data Model
+
+There are two main tables, connected by a one-to-many relationship.
+
+```
+Category (1) ------------< (many) Product
+```
+
+**Category**
+
+| Field | Type | Notes |
+|---|---|---|
+| id | Long | Primary key, auto-generated |
+| name | String | Must be unique (checked in the service layer) |
+| products | List of Product | One-to-many, cascade `ALL` |
+
+**Product**
+
+| Field | Type | Notes |
+|---|---|---|
+| id | Long | Primary key, auto-generated |
+| name | String | |
+| description | String | |
+| price | Double | |
+| category | Category | Many-to-one, `category_id` is required (not null) |
+
+Because the relationship uses `CascadeType.ALL`, deleting a category also deletes all products that belong to it.
+
+---
+
+## Security and Roles
+
+This service does not issue tokens or store passwords. Users log in with **Keycloak**, and Keycloak issues a signed JWT. This service only **validates** that token on every protected request using the Keycloak public keys (JWK set).
+
+How the role mapping works:
+
+1. The client sends the token in the header: `Authorization: Bearer <token>`.
+2. Spring Security validates the token signature against the Keycloak JWK set URI.
+3. A custom converter (`KeyClockRoleReader`) reads the roles from the `realm_access.roles` claim of the token and adds the `ROLE_` prefix. For example, the Keycloak realm role `SELLER` becomes the authority `ROLE_SELLER`.
+4. `@PreAuthorize` on the controller methods checks those authorities.
+
+**Access rules**
+
+| Operation | Who can do it |
+|---|---|
+| Any `GET` request | Everyone (no token needed) |
+| Create or delete a category | `ADMIN` |
+| Create, update or delete a product | `SELLER` |
+| Any other request | Any authenticated user (token required) |
+
+To test the protected endpoints you need a Keycloak realm with the roles `ADMIN` and `SELLER` created, and users assigned to them. See [Getting Started](#getting-started).
+
+---
+
+## API Endpoints
+
+Base URL: `http://localhost:9090`
+
+### Categories
+
+| Method | Endpoint | Description | Access |
+|---|---|---|---|
+| GET | `/api/categories` | Get all categories with their products | Public |
+| GET | `/api/categories/{id}` | Get one category with its products | Public |
+| POST | `/api/categories` | Create a category | `ADMIN` |
+| DELETE | `/api/categories/{id}` | Delete a category (and its products) | `ADMIN` |
+
+### Products
+
+| Method | Endpoint | Description | Access |
+|---|---|---|---|
+| GET | `/api/products` | Get all products | Public |
+| GET | `/api/products/{id}` | Get one product | Public |
+| POST | `/api/products` | Create a product | `SELLER` |
+| PUT | `/api/products/{id}` | Update a product | `SELLER` |
+| DELETE | `/api/products/{id}` | Delete a product | `SELLER` |
+
+---
+
+## Example Requests
+
+### Get an access token from Keycloak
+
+```bash
+curl -X POST "http://localhost:8081/realms/master/protocol/openid-connect/token" \
+  -d "grant_type=password" \
+  -d "client_id=<your-client-id>" \
+  -d "username=<your-username>" \
+  -d "password=<your-password>"
+```
+
+Copy the `access_token` value from the response and use it in the requests below.
+
+### Create a category (ADMIN)
+
+```bash
+curl -X POST "http://localhost:9090/api/categories" \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Electronics" }'
+```
+
+Response `201 Created`:
+
+```json
+{
+  "id": 1,
+  "name": "Electronics",
+  "products": []
+}
+```
+
+### Create a product (SELLER)
+
+```bash
+curl -X POST "http://localhost:9090/api/products" \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "Wireless Mouse",
+        "description": "2.4 GHz wireless mouse",
+        "price": 799.0,
+        "categoryId": 1
+      }'
+```
+
+Response `201 Created`:
+
+```json
+{
+  "id": 1,
+  "name": "Wireless Mouse",
+  "description": "2.4 GHz wireless mouse",
+  "price": 799.0,
+  "categoryId": 1
+}
+```
+
+### Get all categories with products (public)
+
+```bash
+curl "http://localhost:9090/api/categories"
+```
+
+---
+
+## Error Handling
+
+Errors are handled in one place by `GlobalExceptionHandler`, so every error has the same shape:
+
+```json
+{
+  "apipath": "uri=/api/categories",
+  "statusCode": "CONFLICT",
+  "errorMessage": "Category Electronics already exist!",
+  "errorTime": "2026-10-22T18:30:15.123456"
+}
+```
+
+| Situation | HTTP Status |
+|---|---|
+| Creating a category whose name already exists | `409 Conflict` |
+| Creating a product with a category id that does not exist | `404 Not Found` |
+| Missing or invalid token | `401 Unauthorized` |
+| Valid token but missing the required role | `403 Forbidden` |
+
+---
+
+## Getting Started
+
+### Prerequisites
 
 - JDK 17 or newer
-- Maven 3 or newer
-- MySQL Server
+- Maven 3.9 or newer
+- MySQL Server 8 or newer
+- A running Keycloak server (only needed for the protected endpoints)
 - Git
 
----
-
-## How to Run
-
-**1. Clone the project**
+### 1. Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd <YOUR_PROJECT_DIRECTORY>
+git clone <your-repository-url>
+cd products
 ```
 
-**2. Create the database**
-
-Open MySQL and run:
+### 2. Create the database
 
 ```sql
-CREATE DATABASE product_service;
+CREATE DATABASE mydb;
 ```
 
-**3. Set your database details**
+The tables are created automatically on first start (`spring.jpa.hibernate.ddl-auto=update`).
 
-Open `src/main/resources/application.properties` and check these lines:
+### 3. Set up Keycloak
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/product_service
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}
+1. Start Keycloak on port `8081`.
+2. In your realm, create the realm roles `ADMIN` and `SELLER`.
+3. Create users and assign them these roles.
+4. Create a client that can request tokens for your users.
 
-spring.jpa.hibernate.ddl-auto=update
+The service reads the public keys from:
+
+```
+http://localhost:8081/realms/master/protocol/openid-connect/certs
 ```
 
-Then set your MySQL username and password as environment variables:
+If you use a different realm or port, change `jwk-set-uri` in `application.properties`.
 
-```bash
-# Mac / Linux
-export DB_USERNAME=your_username
-export DB_PASSWORD=your_password
+### 4. Configure the application
 
-# Windows (Command Prompt)
-set DB_USERNAME=your_username
-set DB_PASSWORD=your_password
-```
+Open `src/main/resources/application.properties` and update the database username and password to match your MySQL setup. See [Configuration](#configuration) for details.
 
-> Never upload your real password or any secret key to GitHub.
-
-**4. Build the project**
+### 5. Build and run
 
 ```bash
 mvn clean install
-```
-
-**5. Start the application**
-
-```bash
 mvn spring-boot:run
 ```
 
-You can also run the main class directly from your IDE.
+You can also run the `ProductsApplication` class directly from your IDE.
 
-The app starts on port `8080` by default.
+The application starts on **http://localhost:9090**.
 
 ---
 
-## Try the API
+## Configuration
 
-After the app starts, open Swagger in your browser:
+Main settings in `src/main/resources/application.properties`:
 
-```
-http://localhost:8080/swagger-ui/index.html
-```
-
-From there you can see every endpoint and test it without any extra tool. You can also use Postman if you prefer.
-
-### Main Endpoints
-
-| Method | Endpoint | Description |
+| Property | Purpose | Default in this project |
 |---|---|---|
-| POST | `/products` | Create a new product |
-| GET | `/products` | Get all products |
-| GET | `/products/{id}` | Get one product |
-| PUT | `/products/{id}` | Update a product |
-| DELETE | `/products/{id}` | Delete a product |
-| GET | `/categories` | Get all categories |
-| GET | `/categories/{id}` | Get one category with its products |
+| `server.port` | Port of the application | `9090` |
+| `spring.datasource.url` | MySQL connection URL | `jdbc:mysql://localhost:3306/mydb` |
+| `spring.datasource.username` | Database user | set to your own |
+| `spring.datasource.password` | Database password | set to your own |
+| `spring.jpa.hibernate.ddl-auto` | Schema management | `update` |
+| `spring.jpa.show-sql` | Print SQL in the console | `true` |
+| `spring.security.oauth2.resourceserver.jwt.jwk-set-uri` | Keycloak public keys URL | `http://localhost:8081/realms/master/protocol/openid-connect/certs` |
+| `logging.level.com.products` | Log level for this project | `DEBUG` |
+| `management.endpoints.web.exposure.include` | Actuator endpoints exposed | `*` |
 
-*Exact paths may differ slightly. Swagger always shows the latest list.*
+> **Do not commit real passwords to GitHub.** Keep credentials out of version control by reading them from environment variables, for example:
+>
+> ```properties
+> spring.datasource.username=${DB_USERNAME}
+> spring.datasource.password=${DB_PASSWORD}
+> ```
+>
+> and then set `DB_USERNAME` and `DB_PASSWORD` on your machine before starting the app.
+
+---
+
+## API Documentation
+
+Swagger UI is available once the application is running:
+
+```
+http://localhost:9090/swagger-ui/index.html
+```
+
+The raw OpenAPI document is available at:
+
+```
+http://localhost:9090/v3/api-docs
+```
+
+Every endpoint is described there with its summary, request body and response codes. To try a protected endpoint from Swagger, you need to send a valid Keycloak token in the `Authorization` header, or use a tool such as Postman.
+
+---
+
+## Actuator and Monitoring
+
+Spring Boot Actuator is enabled. Some useful endpoints:
+
+| Endpoint | Description |
+|---|---|
+| `/actuator/health` | Application health, with details |
+| `/actuator/info` | Application info |
+| `/actuator/custom` | A custom endpoint written for this project |
+
+> In this project all actuator endpoints are exposed for learning and local development. In a production environment you should expose only what you need and protect the rest.
 
 ---
 
 ## Project Structure
 
 ```
-product-service/
+products/
 ├── src/
 │   ├── main/
-│   │   ├── java/.../
-│   │   │   ├── controller/    # Handles HTTP requests
-│   │   │   ├── service/       # Business logic
-│   │   │   ├── repository/    # Database access
-│   │   │   ├── entity/        # Database tables as Java classes
-│   │   │   ├── dto/           # Data sent and received by the API
-│   │   │   └── mapper/        # Converts entity to DTO and back
+│   │   ├── java/com/products/
+│   │   │   ├── ProductsApplication.java      # Entry point and OpenAPI info
+│   │   │   ├── controller/                   # REST controllers, custom actuator endpoint
+│   │   │   ├── service/                      # Business logic
+│   │   │   ├── repository/                   # Spring Data JPA repositories
+│   │   │   ├── entity/                       # JPA entities (Category, Product, User)
+│   │   │   ├── dto/                          # Request, response and error DTOs
+│   │   │   ├── mapper/                       # Entity <-> DTO conversion
+│   │   │   ├── exception/                    # Custom exceptions and global handler
+│   │   │   └── security/                     # Security config and Keycloak role converter
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
@@ -151,39 +396,26 @@ product-service/
 └── README.md
 ```
 
-The code follows a simple flow: a request comes into the **controller**, the **service** handles the logic, and the **repository** reads or writes the data.
-
 ---
 
-## What I Learned
+## Roadmap
 
-- Building REST APIs with Spring Boot
-- Writing CRUD operations
-- Connecting MySQL using Spring Data JPA
-- Working with entities, repositories and DTOs
-- Keeping code organised in layers
-- Testing and documenting APIs with Swagger
-- Managing a project with Maven
+Things I plan to improve next:
 
----
-
-## Future Plans
-
-- Add input validation and proper error handling
-- Add login and roles using Spring Security
-- Write unit and integration tests
-- Add pagination, sorting and filtering
-- Run the app with Docker
-- Set up CI/CD for automatic builds and tests
+- Bean validation on request bodies (`@Valid`, `@NotBlank`, `@Positive`)
+- A dedicated `ProductNotFoundException` and a catch-all exception handler, so missing resources always return a clean `404`
+- Pagination, sorting and filtering for product and category lists
+- Unit tests for the service layer and integration tests for the controllers
+- Restrict actuator endpoints and move all credentials to environment variables
+- Docker and Docker Compose setup for the app, MySQL and Keycloak
+- CI pipeline for automatic build and test runs
 
 ---
 
 ## Author
 
 **Amrit Raj Singh**
-B.Tech in Computer Science and Information Technology
+B.Tech student, Computer Science and Information Technology
+Java Full Stack Developer
 
-
----
-
-This project was made for learning and practice. Feedback and suggestions are always welcome.
+This project was built for learning and practice. Feedback and suggestions are always welcome.
