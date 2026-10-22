@@ -1,0 +1,250 @@
+2026-08-17 00:44:48,232 {main} INFO  c.products.ProductsApplicationTests -Starting ProductsApplicationTests using Java 17.0.16 with PID 11984 (started by singh in C:\soft\SPRING_BOOT\products)
+2026-08-17 00:44:48,241 {main} INFO  c.products.ProductsApplicationTests -No active profile set, falling back to 1 default profile: "default"
+2026-08-17 00:44:49,064 {background-preinit} INFO  o.h.validator.internal.util.Version -HV000001: Hibernate Validator 9.1.0.Final
+2026-08-17 00:44:50,161 {main} INFO  o.s.d.r.c.RepositoryConfigurationDelegate -Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-17 00:44:50,270 {main} INFO  o.s.d.r.c.RepositoryConfigurationDelegate -Finished Spring Data repository scanning in 85 ms. Found 3 JPA repository interfaces.
+2026-08-17 00:44:51,509 {main} INFO  org.hibernate.orm.jpa -HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-08-17 00:44:51,653 {main} INFO  org.hibernate.orm.core -HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-08-17 00:44:52,247 {main} INFO  o.s.o.j.p.SpringPersistenceUnitInfo -No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-17 00:44:52,324 {main} INFO  com.zaxxer.hikari.HikariDataSource -HikariPool-1 - Starting...
+2026-08-17 00:44:52,663 {main} INFO  com.zaxxer.hikari.pool.HikariPool -HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testDB user=SA
+2026-08-17 00:44:52,666 {main} INFO  com.zaxxer.hikari.HikariDataSource -HikariPool-1 - Start completed.
+2026-08-17 00:44:52,704 {main} WARN  org.hibernate.orm.deprecation -HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-17 00:44:52,737 {main} INFO  o.hibernate.orm.connections.pooling -HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:testDB]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TESTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-17 00:44:54,082 {main} INFO  org.hibernate.orm.core -HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-17 00:44:54,172 {main} INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean -Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-17 00:44:54,328 {main} INFO  o.s.d.j.r.q.QueryEnhancerFactories -Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-17 00:44:55,122 {main} WARN  o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration -spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-17 00:44:55,678 {main} WARN  o.s.w.c.s.GenericWebApplicationContext -Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Unsatisfied dependency expressed through method 'setFilterChains' parameter 0: Error creating bean with name 'securityFilterChain' defined in class path resource [com/products/security/SecurityConfig.class]: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'securityFilterChain' threw exception with message: No qualifying bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' available
+2026-08-17 00:44:55,681 {main} INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean -Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-17 00:44:55,699 {main} INFO  com.zaxxer.hikari.HikariDataSource -HikariPool-1 - Shutdown initiated...
+2026-08-17 00:44:55,710 {main} INFO  com.zaxxer.hikari.HikariDataSource -HikariPool-1 - Shutdown completed.
+2026-08-17 00:44:55,747 {main} INFO  o.s.b.a.l.ConditionEvaluationReportLogger -
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-08-17 00:44:55,794 {main} ERROR o.s.b.d.LoggingFailureAnalysisReporter -
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of method setFilterChains in org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration required a bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' in your configuration.
+
+2026-08-17 00:44:55,802 {main} WARN  o.s.test.context.TestContextManager -Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [com.products.ProductsApplicationTests@5166f042]
+java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@1026770d testClass = com.products.ProductsApplicationTests, locations = [], classes = [com.products.ProductsApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.web.server.context.SpringBootTestRandomPortContextCustomizer@71926a36, org.springframework.boot.test.context.PropertyMappingContextCustomizer@0, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@5b3bb1f7, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@5ec5ea63, org.springframework.boot.test.autoconfigure.OnFailureConditionReportContextCustomizerFactory$OnFailureConditionReportContextCustomizer@5c83ae01, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@0, org.springframework.boot.webmvc.test.autoconfigure.WebDriverContextCustomizer@306f6f1d, org.springframework.boot.test.context.SpringBootTestAnnotation@9b3d580b], resourceBasePath = "src/main/webapp", contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.lambda$loadContext$0(DefaultCacheAwareContextLoaderDelegate.java:195)
+	at org.springframework.test.context.cache.DefaultContextCache.put(DefaultContextCache.java:214)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:160)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:128)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:200)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:139)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:260)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:242)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$1(ClassBasedTestDescriptor.java:423)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:428)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$0(ClassBasedTestDescriptor.java:422)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:422)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$0(ClassBasedTestDescriptor.java:334)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:333)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$1(ClassBasedTestDescriptor.java:322)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$0(ClassBasedTestDescriptor.java:321)
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:27)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:127)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:126)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$0(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:110)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:256)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:228)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:189)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:109)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:168)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:137)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:126)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:71)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$2(InterceptingLauncher.java:66)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:65)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:71)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:94)
+	at org.eclipse.jdt.internal.junit6.runner.JUnit6TestReference.run(JUnit6TestReference.java:105)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:596)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:824)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:494)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:225)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration': Unsatisfied dependency expressed through method 'setFilterChains' parameter 0: Error creating bean with name 'securityFilterChain' defined in class path resource [com/products/security/SecurityConfig.class]: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'securityFilterChain' threw exception with message: No qualifying bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' available
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredMethodElement.resolveMethodArguments(AutowiredAnnotationBeanPostProcessor.java:872)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredMethodElement.inject(AutowiredAnnotationBeanPostProcessor.java:827)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1444)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1225)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1191)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$2(SpringBootContextLoader.java:155)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46)
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1465)
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:600)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:155)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:114)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:247)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.lambda$loadContext$0(DefaultCacheAwareContextLoaderDelegate.java:167)
+	... 81 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityFilterChain' defined in class path resource [com/products/security/SecurityConfig.class]: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'securityFilterChain' threw exception with message: No qualifying bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' available
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:645)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1360)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:229)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.addCandidateEntry(DefaultListableBeanFactory.java:2015)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1978)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveMultipleBeanCollection(DefaultListableBeanFactory.java:1870)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveMultipleBeans(DefaultListableBeanFactory.java:1840)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1718)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1658)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredMethodElement.resolveMethodArguments(AutowiredAnnotationBeanPostProcessor.java:864)
+	... 108 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: Factory method 'securityFilterChain' threw exception with message: No qualifying bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' available
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:183)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:72)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:152)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653)
+	... 125 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.security.oauth2.jwt.JwtDecoder' available
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBean(DefaultListableBeanFactory.java:386)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBean(DefaultListableBeanFactory.java:377)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1317)
+	at org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer$JwtConfigurer.getJwtDecoder(OAuth2ResourceServerConfigurer.java:503)
+	at org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer$JwtConfigurer.getAuthenticationProvider(OAuth2ResourceServerConfigurer.java:512)
+	at org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.getAuthenticationProvider(OAuth2ResourceServerConfigurer.java:406)
+	at org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.init(OAuth2ResourceServerConfigurer.java:311)
+	at org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.init(OAuth2ResourceServerConfigurer.java:172)
+	at org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder.init(AbstractConfiguredSecurityBuilder.java:371)
+	at org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder.doBuild(AbstractConfiguredSecurityBuilder.java:333)
+	at org.springframework.security.config.annotation.AbstractSecurityBuilder.build(AbstractSecurityBuilder.java:38)
+	at com.products.security.SecurityConfig.securityFilterChain(SecurityConfig.java:62)
+	at com.products.security.SecurityConfig$$SpringCGLIB$$0.CGLIB$securityFilterChain$0(<generated>)
+	at com.products.security.SecurityConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:398)
+	at com.products.security.SecurityConfig$$SpringCGLIB$$0.securityFilterChain(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:155)
+	... 128 common frames omitted
+2026-08-17 00:44:56,247 {main} INFO  o.s.mock.web.MockServletContext -Initializing Spring TestDispatcherServlet ''
+2026-08-17 00:44:56,248 {main} INFO  o.s.t.w.s.TestDispatcherServlet -Initializing Servlet ''
+2026-08-17 00:44:56,249 {main} INFO  o.s.t.w.s.TestDispatcherServlet -Completed initialization in 1 ms
+2026-08-17 00:44:56,735 {main} INFO  o.s.mock.web.MockServletContext -Initializing Spring TestDispatcherServlet ''
+2026-08-17 00:44:56,739 {main} INFO  o.s.t.w.s.TestDispatcherServlet -Initializing Servlet ''
+2026-08-17 00:44:56,747 {main} INFO  o.s.t.w.s.TestDispatcherServlet -Completed initialization in 1 ms
+2026-08-17 00:44:56,836 {main} INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils -Could not detect default configuration classes for test class [com.products.repository.CategoryRepositoryTest]: CategoryRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-17 00:44:56,917 {main} INFO  o.s.b.t.c.SpringBootTestContextBootstrapper -Found @SpringBootConfiguration com.products.ProductsApplication for test class com.products.repository.CategoryRepositoryTest
+2026-08-17 00:44:56,923 {main} INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils -Could not detect default configuration classes for test class [com.products.repository.CategoryRepositoryTest]: CategoryRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-17 00:44:56,964 {main} INFO  o.s.b.t.c.SpringBootTestContextBootstrapper -Found @SpringBootConfiguration com.products.ProductsApplication for test class com.products.repository.CategoryRepositoryTest
+2026-08-17 00:44:56,978 {main} INFO  o.s.b.d.r.RestartApplicationListener -Restart disabled due to context in which it is running
+2026-08-17 00:44:57,117 {main} INFO  c.p.r.CategoryRepositoryTest -Starting CategoryRepositoryTest using Java 17.0.16 with PID 11984 (started by singh in C:\soft\SPRING_BOOT\products)
+2026-08-17 00:44:57,130 {main} INFO  c.p.r.CategoryRepositoryTest -No active profile set, falling back to 1 default profile: "default"
+2026-08-17 00:44:57,321 {main} INFO  o.s.d.r.c.RepositoryConfigurationDelegate -Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-17 00:44:57,353 {main} INFO  o.s.d.r.c.RepositoryConfigurationDelegate -Finished Spring Data repository scanning in 26 ms. Found 3 JPA repository interfaces.
+2026-08-17 00:44:57,394 {main} INFO  o.s.b.j.t.a.TestDatabaseAutoConfiguration$EmbeddedDataSourceBeanFactoryPostProcessor -Replacing 'dataSource' DataSource bean with embedded version
+2026-08-17 00:44:57,473 {main} INFO  o.s.j.d.e.EmbeddedDatabaseFactory -Starting embedded database: url='jdbc:h2:mem:718a2d2c-53c4-491c-a6c2-fb7ecc6a2580;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-08-17 00:44:57,531 {main} INFO  org.hibernate.orm.jpa -HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-08-17 00:44:57,591 {main} INFO  o.s.o.j.p.SpringPersistenceUnitInfo -No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-17 00:44:57,598 {main} WARN  org.hibernate.orm.deprecation -HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-17 00:44:57,631 {main} INFO  o.hibernate.orm.connections.pooling -HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:718a2d2c-53c4-491c-a6c2-fb7ecc6a2580]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: 718A2D2C-53C4-491C-A6C2-FB7ECC6A2580/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-17 00:44:57,747 {main} INFO  org.hibernate.orm.core -HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-17 00:44:57,785 {main} INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean -Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-17 00:44:58,002 {main} INFO  c.p.r.CategoryRepositoryTest -Started CategoryRepositoryTest in 1.006 seconds (process running for 14.854)
+2026-08-17 00:44:59,089 {SpringApplicationShutdownHook} INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean -Closing JPA EntityManagerFactory for persistence unit 'default'
